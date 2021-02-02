@@ -1,43 +1,10 @@
-<?php require 'header.php';?>
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">CLIENTS</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link " href="menu.php" >All contacts</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="add_new_contact.php" >Add new contact</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="birthday.php" >Birthday</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="send_email.php" >Send email</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="import.php" >Import</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="export.php" >Export</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="logout">Logout</a>
-            </li>
-        </ul>
-        </div>
-    </div>
-</nav>
-
-
-
-
 <?php 
+    
+    require 'header.php';
+    require 'navbar.php';
+    navbar("Export");
+
+
     session_start();
     if (!isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] != true) {
         header('Location: index.php');

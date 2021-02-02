@@ -5,47 +5,16 @@
         exit;
     }
     require 'header.php';
+
+    require 'navbar.php';
+    navbar("Import");
 ?>
 
 
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">CLIENTS</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link " href="menu.php" >All contacts</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="add_new_contact.php" >Add new contact</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="birthday.php" >Birthday</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="send_email.php" >Send email</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="import.php" >Import</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="export.php" >Export</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="logout">Logout</a>
-            </li>
-        </ul>
-        </div>
-    </div>
-</nav>
 
 
 
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="py-5 col-12 col-sm-10 col-md-8 col-lg-6">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class=" col-12 col-sm-10 col-md-8 col-lg-6">
     <label class="form-label"><h4>Select file to upload:</h4></label>
     <div class="input-group">
         <input type="file" class="form-control" name="csv_file">
