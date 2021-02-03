@@ -51,6 +51,8 @@
             echo "<h4 class='text-primary align-middle py-3'>$this->message</h4>";
         }
 
+        
+//-----------------------------------------------------------------------------------------------
         function hasErrors() {
             if ( count($this->errors) > 0){
                 echo '<ul>';
@@ -422,7 +424,7 @@
                 $this->_sql = "SELECT email from $this->_tbl_name" ;
                 $result = $this->_conn->query($this->_sql);
 
-                if (@$result->num_rows > 0) {
+                if ($result->num_rows > 0) {
 
                     while($row = $result->fetch_assoc()) {
                    
@@ -439,13 +441,6 @@
                     $this->hasErrors();
                 }
             }
-
-
-
         }
-
-
-
-
     } 
 ?>
