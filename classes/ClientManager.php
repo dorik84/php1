@@ -9,6 +9,7 @@
         public $client;
         public $file;
         public $login_info;
+        public $newsLetter;
         
 
 
@@ -16,6 +17,9 @@
 
             $this->errors = [];
             $this->message = "";
+
+            require 'NewsLetter.php';
+            $this->newsLetter = new NewsLetter();
 
             require 'LoginPassword.php';
             $this->login_info = new LoginPassword();
@@ -31,15 +35,20 @@
 
             $this->_conn = new mysqli($servername, $username, $password, $db_name);
             if ($this->_conn->connect_error) {
-                die("Connection failed: " . $this->_conn->connect_error);
+                $this->errors[] = "Connection failed: " . $this->_conn->connect_error;
+                $this->hasErrors();
             }
+        }
+        
+        function __destruct() {
+            $this->_conn->close();
         }
 
 
 
         //===================================================================================== METHODS
         function show_msg () {
-            echo "<h4 style={'color:lightgreen'}>$this->message</h4>";
+            echo "<h4 class='text-primary align-middle py-3'>$this->message</h4>";
         }
 
         function hasErrors() {
@@ -107,10 +116,6 @@
             }
         }
 
-//-----------------------------------------------------------------------------------------------
-        function close_connection(){
-            $this->_conn->close();
-        }
 
 //-----------------------------------------------------------------------------------------------
         function get_client_from_POST () {
@@ -169,7 +174,6 @@
                 $this->errors[] = "No records in database";
                 $this->hasErrors();
             }
-            $this->_conn->close();
         }
 
 //-----------------------------------------------------------------------------------------------
@@ -199,8 +203,7 @@
                     $row_number++;
                 }
                 echo "</tbody></table>";
-            
-                $this->_conn->close();
+
 
             } else $this->message = "The record is added to database"; 
         }
@@ -212,13 +215,11 @@
 
             if (!$this->client->hasErrors()) {
 
-                    
                 $stmt = $this->_conn->prepare("DELETE FROM $this->_tbl_name WHERE id = ?") ;
         
                 $stmt->bind_param("i", $id);
                 $id = $this->client->get_id();
                 $stmt->execute();
-                $this->_conn->close();
         
                 $this->message = "The record is deleted";  
             }
@@ -238,9 +239,7 @@
                 $result = $stmt->get_result();
         
                 $row = $result->fetch_assoc();
-                
-                $this->_conn->close();
-               
+
                 return $row;
 
             } 
@@ -273,8 +272,6 @@
                 $this->errors[] = "No records in database";
                 $this->hasErrors();
             }
-
-            $this->_conn->close();
         }
 
 //-----------------------------------------------------------------------------------------------
@@ -294,10 +291,10 @@
                     <td scope='col'>
                         <div class="btn-group btn-group-sm" role="group" >
                         <form action="delete.php" method="post">
-                            <button type="submit" class="btn btn-outline-danger" name="delete" value="$id">Delete</button>
+                            <button type="submit" class="btn btn-outline-danger mx-2" name="delete" value="$id">Delete</button>
                         </form>
                         <form action="edit.php" method="post">
-                            <button type="submit" class="btn btn-outline-success" name="edit" value="$id">Edit</button>
+                            <button type="submit" class="btn btn-outline-success mx-2" name="edit" value="$id">Edit</button>
                         </form>
                         </div>
                     </td>
@@ -316,8 +313,6 @@
                 $this->errors[] = "No records in database";
                 $this->hasErrors();
             }
-
-            $this->_conn->close();
         }
 
 //-----------------------------------------------------------------------------------------------
@@ -350,7 +345,6 @@
                     fclose($open);
                 }
 
-                $this->_conn->close();
                 $this->message = "Database is imported";
             }
         }
@@ -375,7 +369,6 @@
                     $this->errors[] = "No match found";
                     $this->hasErrors();
                 }
-                $this->_conn->close();
             }
         }
 
@@ -403,7 +396,6 @@
                 $stmt->execute();
                 $this->client->reset_client();
                 $this->message = "The record is modified successfully";
-                $this->_conn->close();
                 return true;
             
             } else return false;
@@ -420,8 +412,35 @@
                 $email = $this->login_info->get_email();
 
                 $stmt->execute();
-                $this->_conn->close();
             }
+        }
+
+//-----------------------------------------------------------------------------------------------
+        function send_news_letter(){
+
+            if (!$this->newsLetter->hasErrors()){
+                $this->_sql = "SELECT email from $this->_tbl_name" ;
+                $result = $this->_conn->query($this->_sql);
+
+                if (@$result->num_rows > 0) {
+
+                    while($row = $result->fetch_assoc()) {
+                   
+                        $to_email = $row["email"];
+                        $subject = $this->newsLetter->get_subject();
+                        $message = $this->newsLetter->get_msg();
+                        $headers = 'From: spivpracya@mail.ru';
+                        mail($to_email,$subject,$message,$headers);
+                         
+                    }
+
+                } else {
+                    $this->errors[] = "The database is empty. Or an error occured";
+                    $this->hasErrors();
+                }
+            }
+
+
 
         }
 

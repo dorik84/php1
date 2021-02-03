@@ -1,7 +1,7 @@
 
 <?php
     echo <<<TABLE
-        <table class='table table-sm table-primary table-striped table-dark col'><thead><tr>
+        <table class='table table-sm table-primary table-striped col'><thead><tr>
         <th scope='col'>#</th>
         <th scope='col'>First Name</th>
         <th scope='col'>Last Name</th>

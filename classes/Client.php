@@ -62,7 +62,7 @@
             if (empty($string))  {
                 return $this->errors[] = "ID is not declared";
             }
-            if (preg_match('/^[0-9]{1,2}$/', $string) === 0) return $this->$errors[] = "ID has wrong format";
+            if (preg_match('/^[0-9]{1,2}$/', $string) === 0) return $this->errors[] = "ID has wrong format";
             $this->_id = $this->validate($string);  
         }
 
@@ -84,7 +84,10 @@
             if (empty($string))  {
                 return $this->errors[] = "Email is not declared";
             }
-            $this->_email = filter_var ($this->validate($string), FILTER_VALIDATE_EMAIL);  
+            if (filter_var ($this->validate($string), FILTER_VALIDATE_EMAIL)) {
+                $this->_email = filter_var ($this->validate($string), FILTER_VALIDATE_EMAIL);   
+            } else return $this->errors[] = "wrong email format";
+ 
         }
 
         function set_phone($string) {
@@ -112,7 +115,7 @@
             if (empty($string))  {
                 return $this->$errors[] = "Province is not declared";
             }
-            if (preg_match('/^[a-zA-Z]{2}$/i', $string) === 0) return $this->$error_array[] = "Province has wrong format";
+            if (preg_match('/^[a-zA-Z]{2}$/i', $string) === 0) return $this->errors[] = "Province has wrong format";
             $this->_province = $this->validate($string);  
         }
 
@@ -120,7 +123,7 @@
             if (empty($string))  {
                 return $this->errors[] = "Postal code is not declared";
             }
-            if (preg_match('/^[a-zA-Z][0-9][a-zA-Z]\s{0,1}[0-9][a-zA-Z][0-9]$/i', $string) === 0) return $this->$error_array[] = "Postal code has wrong format";
+            if (preg_match('/^[a-zA-Z][0-9][a-zA-Z]\s{0,1}[0-9][a-zA-Z][0-9]$/i', $string) === 0) return $this->errors[] = "Postal code has wrong format";
             $this->_postal = $this->validate($string);  
         }
 
@@ -128,7 +131,7 @@
             if (empty($string))  {
                 return $this->errors[] = "Date of Birth is not declared";
             }
-            if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/i', $string) === 0) return $this->$error_array[] = "Date has wrong format";
+            if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/i', $string) === 0) return $this->errors[] = "Date has wrong format";
             $this->_dob = $this->validate($string);  
         }
 

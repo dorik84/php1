@@ -9,7 +9,7 @@
     
 
     if (isset($_POST["edit"]) && $_POST["edit"] != 0){
-        echo "<h4 style='color:orange';>Edit the record:</h4>";
+        echo "<h4 class='text-primary align-middle py-3'>Edit the record:</h4>";
         require 'classes/ClientManager.php';
         $ClientManager = new ClientManager();
         $id = $_POST["edit"];
@@ -31,10 +31,12 @@
  
         $result = $ClientManager->update_by_ID($id);
         if ($result) {
-            $ClientManager->show_msg ();
+            echo "<div class='container-fluid d-flex flex-column justify-content-center align-items-center'>";
+            $ClientManager->show_msg();
             echo "<a  class='btn btn-outline-primary' href='main.php'>Return to main</a>";
+            echo"</div>";
         } else {
-            echo "<h4 style='color:orange';>Edit the record:</h4>";
+            echo "<h4 class='text-primary align-middle py-3'>Edit the record:</h4>";
             add_edit_form($ClientManager->client->get_client_array());
         }
 

@@ -2,7 +2,7 @@
 <?php 
 function navbar ($where = "All contacts"){
     echo <<<begginning
-        <nav class="navbar navbar-expand-lg navbar-light mb-3" style="background-color: #e3f2fd;">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3" style="background-color: #e3f2fd;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">CLIENTS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

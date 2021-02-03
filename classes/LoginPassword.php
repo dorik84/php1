@@ -26,7 +26,9 @@
             if (empty($string))  {
                 return $this->errors[] = "No email provided";
             }
-            $this->_email = filter_var ($this->validate($string), FILTER_VALIDATE_EMAIL);   
+            if (filter_var ($this->validate($string), FILTER_VALIDATE_EMAIL)) {
+                $this->_email = filter_var ($this->validate($string), FILTER_VALIDATE_EMAIL);   
+            } else return $this->errors[] = "wrong email format";
         }
 
         function set_password($string) {

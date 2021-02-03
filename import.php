@@ -8,13 +8,16 @@
 
     $self_server_url = $_SERVER['PHP_SELF'];
     echo <<<FORM
+    <div class="container-fluid d-flex flex-column justify-content-center align-items-center">
+        <h4 class='text-primary align-middle py-3'>Select file to upload::</h4>
         <form action="$self_server_url" method="post" enctype="multipart/form-data" class=" col-12 col-sm-10 col-md-8 col-lg-6">
-            <label class="form-label"><h4>Select file to upload:</h4></label>
+
             <div class="input-group">
                 <input type="file" class="form-control" name="csv_file">
                 <button class="btn btn-outline-secondary" type="submit" >Import</button>
             </div>
         </form>
+    </div>
     FORM;
     
 
