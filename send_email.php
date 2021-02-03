@@ -1,12 +1,8 @@
 <?php 
-    session_start();
-    if (!isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] != true) {
-        header('Location: index.php');
-        exit;
-    }
-    require 'header.php';
+    require 'components/check_session.php';
+    require 'components/header.php';
 
-    require 'navbar.php';
+    require 'components/navbar.php';
     navbar("Send email");
 ?>
 
@@ -86,6 +82,6 @@
 
         } else echo "<h4>Please, fill out all fields</h4>";
     }
-    require 'footer.php';
+    require 'components/footer.php';
 
 ?>

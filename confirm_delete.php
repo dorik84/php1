@@ -1,32 +1,20 @@
 <?php 
-    session_start();
+    require 'components/check_session.php';
 
-    if (!isset($_SESSION["authenticated"]) && !$_SESSION["authenticated"] == true) {
-        header('Location: index.php');
-        exit;
-    }
+    require 'components/header.php';
 
-    require 'header.php';
-
-
-    
     if (isset($_POST["confirm"]) && $_POST["confirm"] != 0){
-        require 'credentials.php';
 
-        $conn = new mysqli($servername, $username, $password, $db_name);
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-            
-        $stmt = $conn->prepare("DELETE FROM $table_name WHERE id = ?") ;
-
-        $stmt->bind_param("i", $id);
+        require 'classes/ClientManager.php';
+        $ClientManager = new ClientManager();
         $id = $_POST["confirm"];
-        $stmt->execute();
-        $conn->close();
 
-        echo "<h4>The record deleted</h4>";
-        echo '<a  class="btn btn-outline-primary" href="menu.php">Return to menu</a>';
+        $ClientManager->delete_by_ID ($id);
+    
+        $ClientManager->show_msg ();
+        echo '<a  class="btn btn-outline-primary" href="main.php">Return to main page</a>';
+
     }
-    require 'footer.php';
+
+    require 'components/footer.php';
 ?>

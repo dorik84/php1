@@ -1,6 +1,7 @@
 <?php 
     class Client {
-        public $error_array;
+        public $errors;
+        private $_id;
         private $_fname;
         private $_lname;
         private $_email;
@@ -12,7 +13,8 @@
         private $_dob;
 
         function __construct() {
-            $this->error_array = [];
+            $this->_id=0;
+            $this->errors = [];
             $this->_fname = "";
             $this->_lname = "";
             $this->_email = "";
@@ -24,6 +26,9 @@
             $this->_dob = "";
         }
     //================================================= GET
+        function get_id() {
+            return $this->_id;
+        }
         function get_fname() {
             return $this->_fname;
         }
@@ -53,71 +58,81 @@
         }
 
         //================================================= SET
+        function set_id($string) {
+            if (empty($string))  {
+                return $this->errors[] = "ID is not declared";
+            }
+            if (preg_match('/^[0-9]{1,2}$/', $string) === 0) return $this->$errors[] = "ID has wrong format";
+            $this->_id = $this->validate($string);  
+        }
+
         function set_fname($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "First name is not declared";
+                return $this->errors[] = "First name is not declared";
             }
-            $this->_fname = validate($string);  
+            $this->_fname = $this->validate($string);  
         }
 
         function set_lname($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "Last name is not declared";
+                return $this->errors[] = "Last name is not declared";
             }
-            $this->_lname = validate($string);  
+            $this->_lname = $this->validate($string);  
         }
 
         function set_email($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "Email is not declared";
+                return $this->errors[] = "Email is not declared";
             }
-            $this->_email = filter_var (validate($string), FILTER_VALIDATE_EMAIL);  
+            $this->_email = filter_var ($this->validate($string), FILTER_VALIDATE_EMAIL);  
         }
 
         function set_phone($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "Phone number is not declared";
+                return $this->errors[] = "Phone number is not declared";
             }
-            $this->_phone = validate($string);  
+            $this->_phone = $this->validate($string);  
         }
 
         function set_address($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "Address is not declared";
+                return $this->errors[] = "Address is not declared";
             }
-            $this->_address = validate($string);  
+            $this->_address = $this->validate($string);  
         }
 
         function set_city($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "City is not declared";
+                return $this->errors[] = "City is not declared";
             }
-            $this->_city = validate($string);  
+            $this->_city = $this->validate($string);  
         }
 
         function set_province($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "Province is not declared";
+                return $this->$errors[] = "Province is not declared";
             }
             if (preg_match('/^[a-zA-Z]{2}$/i', $string) === 0) return $this->$error_array[] = "Province has wrong format";
-            $this->_province = validate($string);  
+            $this->_province = $this->validate($string);  
         }
 
         function set_postal($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "Postal code is not declared";
+                return $this->errors[] = "Postal code is not declared";
             }
             if (preg_match('/^[a-zA-Z][0-9][a-zA-Z]\s{0,1}[0-9][a-zA-Z][0-9]$/i', $string) === 0) return $this->$error_array[] = "Postal code has wrong format";
-            $this->_postal = validate($string);  
+            $this->_postal = $this->validate($string);  
         }
 
         function set_dob($string) {
             if (empty($string))  {
-                return $this->$error_array[] = "Date of Birth is not declared";
+                return $this->errors[] = "Date of Birth is not declared";
             }
             if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/i', $string) === 0) return $this->$error_array[] = "Date has wrong format";
-            $this->_dob = validate($string);  
+            $this->_dob = $this->validate($string);  
         }
+
+        
 
 
 
@@ -128,5 +143,48 @@
             $data = htmlspecialchars($data);
             if ($data = filter_var($data, FILTER_SANITIZE_STRING)) return $data;
         }
+
+        function hasErrors() {
+            if ( count($this->errors) > 0){
+                echo '<ul>';
+                foreach($this->errors as $value) {
+                    echo "<li style='color:red;'>$value</li>";
+                }
+                echo '</ul>';
+                return true;
+            } 
+            else return false;
+        }
+
+
+        function reset_client(){
+            $this->_id=0;
+            $this->error_array = [];
+            $this->_fname = "";
+            $this->_lname = "";
+            $this->_email = "";
+            $this->_phone = "";
+            $this->_address = "";
+            $this->_city = "";
+            $this->_province = "";
+            $this->_postal = "";
+            $this->_dob = "";
+        }
+
+        function get_client_array() {
+            return array(
+                'fname' => $this->_fname,
+                'lname' => $this->_lname,
+                'email' => $this->_email,
+                'phone' =>  $this->_phone,
+                'address_' => $this->_address,
+                'city' =>  $this->_city,
+                'province' => $this->_province,
+                'postal' => $this->_postal,
+                'dob' => $this->_dob,
+                'id' => $this->_id
+            );
+        }
+
     }
 ?>

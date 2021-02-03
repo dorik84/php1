@@ -1,7 +1,19 @@
 <?php
 
-function add_edit_form ($fname="", $lname="", $email="", $phone="", $address="", $city="", $state="", $postal="", $dob="", $id="") {
+function add_edit_form ($array = []) {
+
+    $fname = $array['fname'] ?? "";
+    $lname = $array['lname'] ?? "";
+    $email = $array['email'] ?? "";
+    $phone = $array['phone'] ?? "";
+    $address = $array['address_'] ?? "";
+    $city = $array['city'] ?? "";
+    $province = $array['province'] ?? "";
+    $postal = $array['postal'] ?? "";
+    $dob = $array['dob'] ?? "";
+    $id = $array['id'] ?? "";
     $self_server=$_SERVER['PHP_SELF'];
+
     echo <<<ADDFORMstart
     <form class="row g-3" method="post" action="$self_server">
 
@@ -66,7 +78,7 @@ function add_edit_form ($fname="", $lname="", $email="", $phone="", $address="",
         </div>
         <div class="col py-1">
         <button type="submit" name="submit" class="btn btn-primary" value="$id">Submit</button>
-        <a  class="btn btn-outline-primary" href="menu.php">Cancel</a>
+        <a  class="btn btn-outline-primary" href="main.php">Cancel</a>
         </div>
     </form>
     ADDFORMcontinue;

@@ -1,9 +1,6 @@
 <?php
   session_start();
-  
-
-
-  require 'header.php';
+  require 'components/header.php';
 ?>
 
 
@@ -24,70 +21,21 @@
 </form>
 
 
-<?php require 'footer.php'; 
-
-
+<?php require 'components/footer.php'; 
 
 if (isset($_POST['submit'])) {
 
-  if ( isset($_POST['email']) && isset($_POST['password']) && !empty($_POST['email']) && !empty($_POST['password']) ) {
-
-    
-    function test_input($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
-    };
-    
-    $email = test_input($_POST['email']);
-    $pswd = test_input($_POST['password']);
-      
-      
-      
+    require 'classes/ClientManager.php';
+    $ClientManager = new ClientManager();
+    $ClientManager->login_info->set_email($_POST['email']);
+    $ClientManager->login_info->set_password($_POST['password']);
+    // $ClientManager->create_tbl_auth();
+    // $ClientManager->create_account ();
+    $ClientManager->authenticate();
 
 
 
-  /*
-    //hash password
-    $hash = password_hash($password, PASSWORD_DEFAULT);
-    
-    //save new creds
-    $conn = new mysqli($servername, $username, $password, $db_name);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $stmt = $conn->prepare( "INSERT INTO $table_name_auth (email, hash) VALUES (?,?)" );
-    $stmt->bind_param("ss", $email, $hash );
-
-
-    $stmt->execute();
-
-  */
-
-      require "credentials.php";
-    
-      //retrieve hash from db
-      $conn = new mysqli($servername, $username, $password, $db_name);
-      if ($conn->connect_error) {
-          die("Connection failed: " . $conn->connect_error);
-      }
-      $stmt = $conn->prepare( "SELECT hash from $table_name_auth WHERE email = (?)" );
-      $stmt->bind_param("s", $email );
-
-
-      $stmt->execute();
-      $stmt->bind_result($retrieved_hash);
-      $stmt->fetch();
-      
-      if (password_verify($pswd, $retrieved_hash)) {
-        $_SESSION["authenticated"] = true;
-        header('Location: main.php');
-      } else {
-        echo "<p class='text-danger'>Invalid password</p>";
-      }
-      $conn->close();
-  } else echo"<p class='text-danger'>All fields are required</p>";
+   
 }
 
 ?>
